@@ -1,0 +1,29 @@
+services:
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongo
+      - localstack
+    environment:
+      - DOCKER_ENV=true
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+  localstack:
+    image: localstack/localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3 
+      - DEFAULT_REGION=us-east-1
+    volumes:
+      - "./localstack-data:/var/lib/localstack"
