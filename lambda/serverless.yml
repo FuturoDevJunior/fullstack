@@ -1,0 +1,11 @@
+service: notify-order
+provider:
+  name: aws
+  runtime: python3.9
+functions:
+  notify:
+    handler: handler.notify_new_order
+    events:
+      - http:
+          path: notify
+          method: post
